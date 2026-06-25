@@ -40,8 +40,8 @@ function App() {
           <img src={heroImg} className="base" width="170" height="179" alt="" />
         </div>
         <div>
-          <h1>進数変換 API</h1>
-          <p>10進数をランダム生成して指定した進数に変換します</p>
+          <h1>進数変換 APIの表示</h1>
+          <p>指定した進数に変換された結果を表示します</p>
         </div>
 
         <div className="controls">
