@@ -170,7 +170,7 @@
     font-size: 16px;
     border-radius: 6px;
     border: 1px solid var(--border);
-    background: var(--card-bg, #1a1a1a);
+    background: var(--card-bg, #ffffff);
     color: var(--text-h);
     text-align: center;
 
