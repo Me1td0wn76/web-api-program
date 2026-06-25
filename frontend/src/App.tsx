@@ -1,116 +1,101 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 
+type BaseResponse = {
+  decimal: string
+  base: number
+  result: string
+  digits: number[]
+  digitCount: number
+  generatedAt: string
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [base, setBase] = useState<number>(16)
+  const [data, setData] = useState<BaseResponse | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function fetchBase() {
+    setLoading(true)
+    setError(null)
+    setData(null)
+    try {
+      const res = await fetch(`https://me1td0wn76.github.io/web-api-js/base/${base}/`)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const json: BaseResponse = await res.json()
+      setData(json)
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Unknown error')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <>
       <section id="center">
         <div className="hero">
           <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
         </div>
         <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
+          <h1>進数変換 API</h1>
+          <p>10進数をランダム生成して指定した進数に変換します</p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+        <div className="controls">
+          <label htmlFor="base-input">変換する進数 (2〜1023)</label>
+          <input
+            id="base-input"
+            type="number"
+            min={2}
+            max={1023}
+            value={base}
+            onChange={(e) => setBase(Number(e.target.value))}
+          />
+          <button
+            type="button"
+            className="fetch-btn"
+            onClick={fetchBase}
+            disabled={loading || base < 2 || base > 1023}
+          >
+            {loading ? '取得中...' : '取得'}
+          </button>
+        </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
+        {error && <p className="error">エラー: {error}</p>}
+
+        {data && (
+          <table className="result-table">
+            <tbody>
+              <tr>
+                <th>decimal</th>
+                <td>{data.decimal}</td>
+              </tr>
+              <tr>
+                <th>base</th>
+                <td>{data.base}</td>
+              </tr>
+              <tr>
+                <th>result</th>
+                <td className="mono">{data.result}</td>
+              </tr>
+              <tr>
+                <th>digits</th>
+                <td className="mono">[{data.digits.join(', ')}]</td>
+              </tr>
+              <tr>
+                <th>digitCount</th>
+                <td>{data.digitCount}</td>
+              </tr>
+              <tr>
+                <th>generatedAt</th>
+                <td>{data.generatedAt}</td>
+              </tr>
+            </tbody>
+          </table>
+        )}
       </section>
 
       <div className="ticks"></div>
