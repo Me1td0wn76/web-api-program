@@ -22,7 +22,7 @@ function App() {
     setError(null)
     setData(null)
     try {
-      const res = await fetch(`https://me1td0wn76.github.io/web-api-js/base/${base}/`)
+      const res = await fetch(`https://me1td0wn76.github.io/web-api-js/base/${base}.json`)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const json: BaseResponse = await res.json()
       setData(json)
