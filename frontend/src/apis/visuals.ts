@@ -90,7 +90,7 @@ export const visualApis: ApiDef[] = [
     category: CATEGORY,
     name: 'Nekos.life',
     description: 'ネコ耳キャラのGIF・画像を返します。',
-    note: 'nekos.lifeは2021年に終了したため、後継のnekos.bestを使用しています。',
+    note: 'nekos.lifeは2021年に終了したため後継のnekos.bestを使用していますが、現在応答が不安定なようです。',
     run: async () => {
       const data = (await fetchJson('https://nekos.best/api/v2/neko')) as {
         results: Array<{ url: string }>
