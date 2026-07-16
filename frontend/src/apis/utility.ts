@@ -98,6 +98,7 @@ export const utilityApis: ApiDef[] = [
     run: async () => {
       const data = await fetchJson('https://colormind.io/api/', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ model: 'default' }),
       })
       return { kind: 'json', data }
