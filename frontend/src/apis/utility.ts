@@ -3,23 +3,6 @@ import { bust, fetchJson, randomInt } from './utils'
 
 const CATEGORY = '変換・ユーティリティ・ネタ系'
 
-const LOREM_WORDS = [
-  'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit',
-  'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore',
-  'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud',
-]
-
-function generateLoremIpsum(sentences: number): string {
-  const out: string[] = []
-  for (let s = 0; s < sentences; s++) {
-    const wordCount = randomInt(6, 14)
-    const words = Array.from({ length: wordCount }, () => LOREM_WORDS[randomInt(0, LOREM_WORDS.length - 1)])
-    words[0] = words[0][0].toUpperCase() + words[0].slice(1)
-    out.push(`${words.join(' ')}.`)
-  }
-  return out.join(' ')
-}
-
 export const utilityApis: ApiDef[] = [
   {
     id: 'qr-server',
@@ -91,41 +74,11 @@ export const utilityApis: ApiDef[] = [
     },
   },
   {
-    id: 'colormind',
-    category: CATEGORY,
-    name: 'Colormind API',
-    description: 'カラーパレットを自動生成します。',
-    run: async () => {
-      const data = await fetchJson('https://colormind.io/api/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'default' }),
-      })
-      return { kind: 'json', data }
-    },
-  },
-  {
-    id: 'lorem-text',
-    category: CATEGORY,
-    name: 'Lorem Text API',
-    description: 'ダミーテキスト(lorem ipsum)を生成します。',
-    local: true,
-    note: 'loripsum.net がDNS解決不能になっているため、ローカルでLorem Ipsum文を生成しています。',
-    run: async () => ({ kind: 'text', text: generateLoremIpsum(3) }),
-  },
-  {
     id: 'random-word-api',
     category: CATEGORY,
     name: 'Random Word API',
     description: 'ランダムな英単語を生成します。',
     note: 'Heroku無料枠終了の影響で不安定になる場合があります。',
     run: async () => ({ kind: 'json', data: await fetchJson('https://random-word-api.herokuapp.com/word') }),
-  },
-  {
-    id: 'mockaroo',
-    category: CATEGORY,
-    name: 'Bacon-mockup系 (Mockaroo)',
-    description: 'ダミーデータを大量に生成します。',
-    unavailable: 'APIキーに加えて事前にWeb管理画面でスキーマを定義する必要があり、汎用的な実装ができないため未対応です。',
   },
 ]
