@@ -38,6 +38,8 @@ export const funApis: ApiDef[] = [
     name: 'InspiroBot(非公式ラッパー)',
     description: 'AIが生成する意識高い系名言画像。',
     run: async () => {
+      // Unlike most entries here this endpoint replies with a bare image URL as
+      // plain text (not JSON), so we read the body as text instead of parsing it.
       const url = await (await fetch('https://inspirobot.me/api?generate=true')).text()
       return { kind: 'image', imageUrl: url.trim() }
     },
