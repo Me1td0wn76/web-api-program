@@ -1,6 +1,10 @@
 import type { ApiDef } from './types'
 import { bust, fetchJson } from './utils'
 
+// 動物系(画像・情報): dog/fox/HTTP-status-code image APIs.
+// PlaceKitten, Shibe.online, Some Random API, Axolotl API and RandomDuck were dropped
+// from the original wishlist — they were either offline, domain-squatted, or blocked
+// CORS/network requests when verified against a running browser.
 const CATEGORY = '動物系(画像・情報)'
 
 export const animalApis: ApiDef[] = [

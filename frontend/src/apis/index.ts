@@ -1,3 +1,6 @@
+// Aggregates every category file into the single flat list App.tsx renders,
+// and derives the category tab list from whatever categories actually exist
+// (so adding a new category file is enough — no separate list to keep in sync).
 import { animalApis } from './animals'
 import { jokeApis } from './jokes'
 import { quoteApis } from './quotes'

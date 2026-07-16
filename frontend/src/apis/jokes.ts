@@ -1,6 +1,9 @@
 import type { ApiDef } from './types'
 import { fetchJson } from './utils'
 
+// ジョーク・ネタ系: one-liner joke / advice APIs.
+// Yo Momma Jokes, Evil Insult Generator, FML API and 8ball API were dropped — dead DNS,
+// invalid TLS certs, or consistent "Failed to fetch" errors when checked in a real browser.
 const CATEGORY = 'ジョーク・ネタ系'
 
 export const jokeApis: ApiDef[] = [
@@ -32,6 +35,7 @@ export const jokeApis: ApiDef[] = [
     description: '親父ギャグ(Dad Joke)をランダムに返します。',
     run: async () => ({
       kind: 'json',
+      // Without an explicit Accept header this endpoint serves its HTML homepage instead of JSON.
       data: await fetchJson('https://icanhazdadjoke.com/', { headers: { Accept: 'application/json' } }),
     }),
   },
