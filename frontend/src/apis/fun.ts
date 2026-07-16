@@ -5,33 +5,6 @@ const CATEGORY = '完全に「どうでもいい」ネタ系'
 
 export const funApis: ApiDef[] = [
   {
-    id: 'coin-flip',
-    category: CATEGORY,
-    name: 'CoinFlip API(非公式)',
-    description: 'コイントスの結果を返すだけ。',
-    local: true,
-    note: '実在する安定した公開APIが見つからなかったため、ローカルで判定しています。',
-    run: async () => ({ kind: 'text', text: pick(['表 (Heads)', '裏 (Tails)']) }),
-  },
-  {
-    id: 'dice-roll',
-    category: CATEGORY,
-    name: 'Dice Roll API',
-    description: 'サイコロを振るだけ。',
-    local: true,
-    note: '実在する安定した公開APIが見つからなかったため、ローカルで判定しています。',
-    run: async () => ({ kind: 'text', text: `🎲 ${randomInt(1, 6)}` }),
-  },
-  {
-    id: 'rock-paper-scissors',
-    category: CATEGORY,
-    name: 'RockPaperScissors API(非公式)',
-    description: 'じゃんけんの手をランダム生成。',
-    local: true,
-    note: '実在する安定した公開APIが見つからなかったため、ローカルで判定しています。',
-    run: async () => ({ kind: 'text', text: pick(['グー ✊', 'チョキ ✌️', 'パー ✋']) }),
-  },
-  {
     id: 'chuck-norris-facts-alt',
     category: CATEGORY,
     name: 'Chuck Norris Facts (別実装)',
@@ -62,23 +35,6 @@ export const funApis: ApiDef[] = [
       const url = await (await fetch('https://inspirobot.me/api?generate=true')).text()
       return { kind: 'image', imageUrl: url.trim() }
     },
-  },
-  {
-    id: 'pun-api',
-    category: CATEGORY,
-    name: 'PUN API',
-    description: 'ダジャレ(pun)を生成します。',
-    local: true,
-    note: '実在する安定した公開APIが見つからなかったため、ローカルの短いリストからランダムに返しています。',
-    run: async () => ({
-      kind: 'text',
-      text: pick([
-        'I used to be a banker, but I lost interest.',
-        "I'm reading a book about anti-gravity. It's impossible to put down.",
-        'A bicycle can\'t stand on its own because it is two-tired.',
-        'I only know 25 letters of the alphabet. I don\'t know y.',
-      ]),
-    }),
   },
   {
     id: 'insult-mattbas',
@@ -125,13 +81,6 @@ export const funApis: ApiDef[] = [
     run: async () => ({ kind: 'json', data: await fetchJson('https://api.openbrewerydb.org/v1/breweries/random') }),
   },
   {
-    id: 'random-beer-api',
-    category: CATEGORY,
-    name: 'Random Beer API',
-    description: 'ビール銘柄をランダムに取得します。',
-    unavailable: '主要な実装元(Punk API・random-data-api)がいずれも終了しており、代替が見つかりませんでした。',
-  },
-  {
     id: 'what-the-commit',
     category: CATEGORY,
     name: 'What The Commit',
@@ -155,25 +104,6 @@ export const funApis: ApiDef[] = [
     name: 'GitHub Zen API',
     description: 'GitHub公式の「禅の一言」を返します。',
     run: async () => ({ kind: 'text', text: await (await fetch('https://api.github.com/zen')).text() }),
-  },
-  {
-    id: 'opensea-nft',
-    category: CATEGORY,
-    name: 'Bored Ape系のNFTメタデータAPI(OpenSea等)',
-    description: 'NFT情報を取得します(要キー)。',
-    needsKey: true,
-    keyLabel: 'X-API-KEY',
-    keyPlaceholder: 'OpenSeaで発行したAPIキー',
-    params: [{ key: 'slug', label: 'コレクションslug', defaultValue: 'boredapeyachtclub' }],
-    run: async (v) => {
-      const slug = encodeURIComponent(v.slug?.trim() || 'boredapeyachtclub')
-      return {
-        kind: 'json',
-        data: await fetchJson(`https://api.opensea.io/api/v2/collections/${slug}`, {
-          headers: { 'X-API-KEY': v.apiKey },
-        }),
-      }
-    },
   },
   {
     id: 'emoji-api',
@@ -228,20 +158,6 @@ export const funApis: ApiDef[] = [
     name: 'PlaceBear',
     description: '熊画像専用プレースホルダーです。',
     run: async () => ({ kind: 'image', imageUrl: `https://placebear.com/300/200?_=${Date.now()}` }),
-  },
-  {
-    id: 'fill-murray',
-    category: CATEGORY,
-    name: 'FillMurray',
-    description: 'ビル・マーレイの顔でプレースホルダー画像を生成します。',
-    unavailable: '現在fillmurray.comが502エラーを返しており、応答しません。',
-  },
-  {
-    id: 'catboosted',
-    category: CATEGORY,
-    name: 'CatBoosted (非公式ネタAPI)',
-    description: '意味なく猫画像を返す系の派生APIです。',
-    unavailable: '実在する安定した公開エンドポイントが見つかりませんでした。',
   },
   {
     id: 'dev-random-joke',
