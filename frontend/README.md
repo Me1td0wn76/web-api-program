@@ -1,77 +1,69 @@
-# React + TypeScript + Vite
+# 雑多API図鑑
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+動物・ジョーク・名言・エンタメなど、無料で使える公開APIをブラウザから直接叩いて試せるカタログアプリです。カテゴリタブと検索で67個のAPIから絞り込み、各カードの「取得する」ボタンを押すとその場でレスポンス(画像・JSON・テキスト)を表示します。
 
-Currently, two official plugins are available:
+Vite + React + TypeScriptで構築しています。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## セットアップ
 
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
+npm run dev      # 開発サーバー起動 (http://localhost:5173)
+npm run build    # 型チェック + 本番ビルド
+npm run lint     # ESLint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ディレクトリ構成
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+src/
+  apis/
+    types.ts          # ApiDef / ApiParam / ApiResult の型定義
+    utils.ts           # fetchJson / fetchJsonp / bust などの共通ヘルパー
+    animals.ts          カテゴリごとのAPI定義(下記10ファイル)
+    jokes.ts
+    quotes.ts
+    visuals.ts
+    trivia.ts
+    entertainment.ts
+    music.ts
+    geo.ts
+    utility.ts
+    fun.ts
+    index.ts           # 上記10ファイルを1つの配列に集約
+  components/
+    ApiCard.tsx        # 1つのAPIカードを描画する汎用コンポーネント
+  App.tsx              # 検索ボックス + カテゴリタブ + カードグリッド
+  main.tsx             # エントリーポイント
 ```
+
+すべてのAPIは同じ`ApiDef`型のオブジェクトとして表現され、`ApiCard`が共通のロジック(パラメータ入力・取得ボタン・結果表示)で描画します。新しいAPIを追加する場合は、該当カテゴリファイルに1エントリ追加するだけで一覧に反映されます。
+
+```ts
+{
+  id: 'example-api',
+  category: 'カテゴリ名',
+  name: '表示名',
+  description: '説明文',
+  run: async () => ({ kind: 'json', data: await fetchJson('https://example.com/api') }),
+}
+```
+
+- `params` — カード上に表示する入力欄(テキスト or セレクト)
+- `needsKey` — APIキー入力欄を追加し、未入力なら取得をブロック
+- `note` — 常時表示する補足(代替API使用・レート制限などの注意書き)
+- `local: true` — 実サーバーを叩かないローカル生成であることを示すバッジ表示
+- `unavailable: '理由'` — ボタンを出さず、理由だけを表示する無効化カード
+
+## 実装方針・注意点
+
+元の依頼は約100個のAPIを実装対象としていましたが、実際にPlaywrightでブラウザを起動して1件ずつ動作検証した結果、以下は一覧から除外しています。
+
+- **APIキー必須のもの**(Marvel、Mockaroo、OpenSea、They Said Soなど)
+- **現在ドメイン失効・停止・危険(ドメイン転売)などで恒久的に利用不可なもの**(PlaceKitten、Shibe.online、Waifu.pics、Numbers APIなど)
+- **実在する安定した公開APIが見つからず、ローカル生成でしか代替できないもの**(コイントス、サイコロ等)
+- **`Failed to fetch`(CORS非対応・証明書切れ等)が再現性をもって発生するもの**(Quotable API、REST Countriesなど)
+
+一部のAPIは元サービスが終了しているため、同等の後継サービスに差し替えています(例: Studio Ghibli API → vercel版ミラー、Bored API → appbrewery版)。差し替えた場合はカード内の注記(`note`)に明記しています。
+
+Deezer APIのみCORSヘッダーを返さないため、`<script>`タグによるJSONP読み込み(`fetchJsonp`)で取得しています。
