@@ -3,12 +3,17 @@ import './App.css'
 import { allApis, categories } from './apis'
 import { ApiCard } from './components/ApiCard'
 
+// Top-level page: a search box + category tabs that filter `allApis`, rendered as
+// a grid of generic ApiCard instances. See src/apis/index.ts for how the catalog
+// is assembled and src/apis/types.ts for the ApiDef shape each card is driven by.
+
 const ALL_LABEL = 'すべて'
 
 function App() {
   const [category, setCategory] = useState(ALL_LABEL)
   const [query, setQuery] = useState('')
 
+  // Recomputed only when the tab or search text changes, not on every render/keystroke elsewhere.
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     return allApis.filter((api) => {
