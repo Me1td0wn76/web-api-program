@@ -50,6 +50,8 @@ export function ApiCard({ def }: { def: ApiDef }) {
 
   const handleRun = async () => {
     if (!def.run) return
+    // Block the call client-side (rather than letting it fail server-side) when a
+    // required key/token field is still empty, so the error message is immediate and clear.
     if (def.needsKey && !values.apiKey?.trim()) {
       setError(`${def.keyLabel ?? 'APIキー'}を入力してください`)
       setResult(null)
