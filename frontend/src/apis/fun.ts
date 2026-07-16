@@ -99,6 +99,8 @@ export const funApis: ApiDef[] = [
     name: 'Hacker News API (Firebase)',
     description: 'Hacker Newsの投稿を取得します。',
     run: async () => {
+      // The Firebase API has no "random story" endpoint, so we fetch the top-story ID
+      // list first, then pick one of the top 50 IDs and fetch that story individually.
       const topIds = (await fetchJson('https://hacker-news.firebaseio.com/v0/topstories.json')) as number[]
       const id = pick(topIds.slice(0, 50))
       return { kind: 'json', data: await fetchJson(`https://hacker-news.firebaseio.com/v0/item/${id}.json`) }
