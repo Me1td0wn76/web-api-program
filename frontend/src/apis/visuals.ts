@@ -1,5 +1,5 @@
 import type { ApiDef } from './types'
-import { bust, fetchJson } from './utils'
+import { bust } from './utils'
 
 const CATEGORY = '画像・GIF・ビジュアル系'
 
@@ -77,33 +77,5 @@ export const visualApis: ApiDef[] = [
       kind: 'image',
       imageUrl: bust('https://thispersondoesnotexist.com/random-person.jpeg'),
     }),
-  },
-  {
-    id: 'waifu-pics',
-    category: CATEGORY,
-    name: 'Waifu.pics',
-    description: 'アニメ風画像をランダムに取得します。',
-    unavailable: 'ドメインが第三者(ギャンブルサイト)に転売されているのを確認したため、安全のため無効化しています。',
-  },
-  {
-    id: 'nekos-life',
-    category: CATEGORY,
-    name: 'Nekos.life',
-    description: 'ネコ耳キャラのGIF・画像を返します。',
-    note: 'nekos.lifeは2021年に終了したため後継のnekos.bestを使用していますが、現在応答が不安定なようです。',
-    run: async () => {
-      const data = (await fetchJson('https://nekos.best/api/v2/neko')) as {
-        results: Array<{ url: string }>
-      }
-      return { kind: 'image', imageUrl: data.results[0].url }
-    },
-  },
-  {
-    id: 'bored-api',
-    category: CATEGORY,
-    name: 'Boredom API (Bored API)',
-    description: '暇つぶしのアイデアを提案します。',
-    note: '本家boredapi.comが終了したため、後継のbored-api.appbrewery.comを使用しています。',
-    run: async () => ({ kind: 'json', data: await fetchJson('https://bored-api.appbrewery.com/random') }),
   },
 ]

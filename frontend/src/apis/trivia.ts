@@ -5,13 +5,6 @@ const CATEGORY = '雑学・トリビア系'
 
 export const triviaApis: ApiDef[] = [
   {
-    id: 'numbers-api',
-    category: CATEGORY,
-    name: 'Numbers API',
-    description: '数字にまつわる豆知識を返します。',
-    unavailable: 'numbersapi.com のバックエンドが停止しており、常に404が返るため利用できません。',
-  },
-  {
     id: 'cat-facts',
     category: CATEGORY,
     name: 'Cat Facts API',
@@ -53,21 +46,6 @@ export const triviaApis: ApiDef[] = [
     name: 'Trivia API (Open Trivia DB)',
     description: 'クイズ問題をランダムに取得します。',
     run: async () => ({ kind: 'json', data: await fetchJson('https://opentdb.com/api.php?amount=1') }),
-  },
-  {
-    id: 'rest-countries',
-    category: CATEGORY,
-    name: 'REST Countries',
-    description: '世界の国の基本情報を取得します。',
-    note: '現在サービス移行中で、CORSエラーになる場合があります。',
-    params: [{ key: 'country', label: '国名(英語)', defaultValue: 'japan' }],
-    run: async (v) => {
-      const country = v.country?.trim() || 'japan'
-      return {
-        kind: 'json',
-        data: await fetchJson(`https://restcountries.com/v3.1/name/${encodeURIComponent(country)}`),
-      }
-    },
   },
   {
     id: 'genderize',

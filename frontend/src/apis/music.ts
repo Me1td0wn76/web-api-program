@@ -3,20 +3,6 @@ import { fetchJson, fetchJsonp } from './utils'
 
 const CATEGORY = '音楽系'
 
-const FULLWIDTH_MAP: Record<string, string> = { ' ': '　' }
-
-function toAesthetic(input: string): string {
-  return Array.from(input)
-    .map((ch) => {
-      const code = ch.codePointAt(0) ?? 0
-      if (code >= 0x21 && code <= 0x7e) {
-        return String.fromCodePoint(code - 0x21 + 0xff01)
-      }
-      return FULLWIDTH_MAP[ch] ?? ch
-    })
-    .join('')
-}
-
 export const musicApis: ApiDef[] = [
   {
     id: 'lyrics-ovh',
@@ -54,19 +40,6 @@ export const musicApis: ApiDef[] = [
     run: async (v) => {
       const q = encodeURIComponent(v.q?.trim() || 'Coldplay')
       return { kind: 'json', data: await fetchJsonp(`https://api.deezer.com/search?q=${q}&output=jsonp`) }
-    },
-  },
-  {
-    id: 'vaporwave-aesthetic',
-    category: CATEGORY,
-    name: 'Vaporwave/Aesthetic API系(非公式)',
-    description: '曲名生成ネタAPI。',
-    local: true,
-    note: '安定した公開APIが見つからなかったため、入力文字をVaporwave風の全角文字に変換するローカル処理で代替しています。',
-    params: [{ key: 'text', label: 'テキスト', defaultValue: 'aesthetic' }],
-    run: async (v) => {
-      const text = v.text?.trim() || 'aesthetic'
-      return { kind: 'text', text: toAesthetic(text) }
     },
   },
 ]
