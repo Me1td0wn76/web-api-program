@@ -1,3 +1,5 @@
+/* Page shell: header, search box, category tabs (see App.tsx). */
+
 #center {
   display: flex;
   flex-direction: column;
@@ -60,6 +62,8 @@
   }
 }
 
+/* Card grid: one .api-card per ApiDef, rendered by src/components/ApiCard.tsx. */
+
 .api-grid {
   width: 100%;
   display: grid;
@@ -96,6 +100,8 @@
     flex: 1 1 auto;
   }
 }
+
+/* Small status badges shown next to a card's title (local / needs-key / unavailable). */
 
 .api-badge {
   font-size: 11px;
@@ -138,6 +144,8 @@
   color: #dc2626;
   background: rgba(248, 113, 113, 0.08);
 }
+
+/* Per-card param inputs, fetch button, error text, and result rendering. */
 
 .api-card-params {
   display: flex;
@@ -196,6 +204,8 @@
   color: #dc2626;
   font-size: 12px;
 }
+
+/* Result rendering: one variant per ResultKind ('image' | 'json' | 'text'). */
 
 .api-result {
   border-top: 1px solid var(--border);
