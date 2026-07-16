@@ -1,6 +1,11 @@
 import type { ApiDef } from './types'
 import { fetchJson, randomInt } from './utils'
 
+// エンタメ・カルチャー系: fictional-universe database APIs (anime, movies, games).
+// Marvel API, Breaking Bad Quotes API and The Lord of the Rings API were dropped:
+// Marvel's auth scheme needs a private key that can't be exposed in frontend code,
+// the LOTR API requires a free but manually-issued bearer token, and Breaking Bad
+// Quotes consistently failed to fetch.
 const CATEGORY = 'エンタメ・カルチャー系'
 
 export const entertainmentApis: ApiDef[] = [

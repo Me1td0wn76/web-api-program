@@ -1,6 +1,10 @@
 import type { ApiDef } from './types'
 import { bust } from './utils'
 
+// 画像・GIF・ビジュアル系: direct-image / avatar-generator APIs, all fetched as
+// plain <img src> URLs rather than via fetch() so no CORS headers are needed.
+// Waifu.pics, Nekos.life and Bored API were dropped: waifu.pics's domain has been
+// resold to a gambling site, and the other two consistently failed to fetch.
 const CATEGORY = '画像・GIF・ビジュアル系'
 
 export const visualApis: ApiDef[] = [

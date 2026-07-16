@@ -1,6 +1,9 @@
 import type { ApiDef } from './types'
 import { fetchJson } from './utils'
 
+// 天気・時間・地理系: weather/time/location APIs. WorldTimeAPI and IP-API are kept
+// under their original wishlist names but actually call their currently-maintained
+// replacements (timeapi.io / ipwho.is) — see each entry's `note` for details.
 const CATEGORY = '天気・時間・地理系'
 
 export const geoApis: ApiDef[] = [

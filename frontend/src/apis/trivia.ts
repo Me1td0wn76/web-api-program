@@ -1,6 +1,9 @@
 import type { ApiDef } from './types'
 import { fetchJson } from './utils'
 
+// 雑学・トリビア系: facts and identity-guessing (genderize/agify/nationalize) APIs.
+// Numbers API and REST Countries were dropped — numbersapi.com's backend now 404s on
+// every path, and restcountries.com stopped sending CORS headers mid-migration.
 const CATEGORY = '雑学・トリビア系'
 
 export const triviaApis: ApiDef[] = [

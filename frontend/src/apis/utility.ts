@@ -1,6 +1,10 @@
 import type { ApiDef } from './types'
 import { bust, fetchJson, randomInt } from './utils'
 
+// 変換・ユーティリティ・ネタ系: data/format conversion utility APIs.
+// Colormind API, Lorem Text API (loripsum.net) and Mockaroo were dropped: Colormind
+// consistently failed to fetch, loripsum.net no longer resolves in DNS, and Mockaroo
+// needs both an API key and a schema pre-defined on their website.
 const CATEGORY = '変換・ユーティリティ・ネタ系'
 
 export const utilityApis: ApiDef[] = [

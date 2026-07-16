@@ -1,6 +1,8 @@
 import type { ApiDef } from './types'
 import { fetchJson, fetchJsonp } from './utils'
 
+// 音楽系: lyrics/track-search APIs. The "Vaporwave/Aesthetic API系(非公式)" entry from
+// the original wishlist was dropped — no real, stable public API for it could be found.
 const CATEGORY = '音楽系'
 
 export const musicApis: ApiDef[] = [
