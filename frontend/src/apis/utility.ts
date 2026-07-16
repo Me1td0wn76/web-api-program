@@ -66,6 +66,8 @@ export const utilityApis: ApiDef[] = [
     name: 'QuickChart',
     description: 'URLだけでグラフ画像を生成します。',
     run: async () => {
+      // QuickChart renders a Chart.js config that's passed as a URL-encoded query param
+      // (no request body/POST involved) — the image itself *is* the chart.
       const config = {
         type: 'bar',
         data: {

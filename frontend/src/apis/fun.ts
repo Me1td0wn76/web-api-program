@@ -1,6 +1,12 @@
 import type { ApiDef } from './types'
 import { fetchJson, pick, randomInt } from './utils'
 
+// 完全に「どうでもいい」ネタ系: joke/novelty APIs with no real practical use.
+// CoinFlip, Dice Roll, RockPaperScissors and PUN API were dropped (no stable public
+// API exists for them, so they'd have been fake client-side generators pretending to
+// be network calls). Random Beer API, FillMurray, CatBoosted and the OpenSea NFT
+// entry were dropped too — dead endpoints, a 502 that never resolved, an API that
+// couldn't be found at all, and an API that requires a paid key, respectively.
 const CATEGORY = '完全に「どうでもいい」ネタ系'
 
 export const funApis: ApiDef[] = [
