@@ -1,6 +1,11 @@
 import { useState } from 'react'
 import type { ApiDef, ApiResult } from '../apis/types'
 
+// Generic card component: one instance handles every entry in the API catalog
+// (params, key input, fetch/generate button, and result rendering), driven entirely
+// by the declarative ApiDef passed in as `def`.
+
+/** Seeds the per-card form state from an ApiDef's param defaults (plus an apiKey slot if needed). */
 function initialValues(def: ApiDef): Record<string, string> {
   const values: Record<string, string> = {}
   for (const param of def.params ?? []) {
@@ -10,6 +15,7 @@ function initialValues(def: ApiDef): Record<string, string> {
   return values
 }
 
+/** Renders one ApiResult according to its `kind` — image, json, or text. */
 function ResultView({ result }: { result: ApiResult }) {
   if (result.kind === 'image') {
     return (
